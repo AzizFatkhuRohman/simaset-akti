@@ -94,4 +94,10 @@ class PengambilanController extends Controller
         ]);
         return redirect('dashboard')->with('create','Create successfully');
     }
+    public function getUser(){
+        $title = 'Pengambilan';
+        $collection = $this->pengambilan->ShowUser();
+        $eq = $this->equipment->Show();
+        return view('pengambilan.user',compact('title','collection','eq'));
+    }
 }

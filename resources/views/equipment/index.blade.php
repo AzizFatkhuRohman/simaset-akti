@@ -61,6 +61,17 @@
     });
 </script>
 @endif
+@if (session('create'))
+<script>
+    // Tampilkan pesan dengan SweetAlert
+    Swal.fire({
+        title: 'Post',
+        text: '{{ session('create') }}',
+        icon: 'success',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
 @if ($errors->any())
 <div class="alert text-danger">
     <ul>
@@ -422,5 +433,10 @@
 </script>
 <script>
     new DataTable('#table');
+</script>
+<script>
+    $(document).ready(function() {
+        $('.form-select').select2();
+    });
 </script>
 @endsection

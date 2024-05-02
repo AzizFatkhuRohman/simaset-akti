@@ -84,6 +84,21 @@ class PeminjamanController extends Controller
     public function getUser(){
         $title = 'Dashboard';
         $collection = $this->peminjaman->ShowUser();
-        return view('peminjaman.user',compact('title','collection'));
+        $eq = $this->equipment->Show();
+        return view('peminjaman.user',compact('title','collection','eq'));
+    }
+    public function putUser(Request $request, $id){
+        $val = Validator::make($request->all(),[
+            'jam_pengembalian'=>'required'
+        ]);
+        if ($val->fails()) {
+            return redirect('peminjaman-user')->withErrors($val);
+        } else {
+            $this->peminjaman->Edit($id,[
+                'jam_pengembalian'=>$request->jam_pengembalian
+            ]);
+            return redirect('peminjaman-user')->with('update','Update Successfully');
+        }
+        
     }
 }

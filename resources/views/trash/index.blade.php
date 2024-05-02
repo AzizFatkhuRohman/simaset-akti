@@ -111,4 +111,9 @@
 <script>
     new DataTable('#table');
 </script>
+<script>
+    $(document).ready(function() {
+        $('.form-select').select2();
+    });
+</script>
 @endsection

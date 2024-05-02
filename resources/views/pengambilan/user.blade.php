@@ -43,28 +43,34 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Peminjaman</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Pengambilan</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form action="" method="post">
                             @csrf
                             <input type="text" name="nama" value="{{Auth::user()->id}}" hidden>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label">Status</label>
+                                <select class="form-select" aria-label="Default select example" name="status">
+                                    <option value="mahasiswa">mahasiswa</option>
+                                    <option value="pegawai">pegawai</option>
+                                </select>
+                            </div>
                             <div class="row">
                                 <div class="mb-3 col-6">
-                                    <label for="exampleInputPassword1" class="form-label">No Aset</label>
-                                    <select class="form-select" aria-label="Default select example" name="no_aset">
+                                    <label for="exampleInputPassword1" class="form-label">Jenis Barang</label>
+                                    <select class="form-select" aria-label="Default select example" name="jenis_barang">
                                         @foreach ($eq as $item)
                                         <option value="{{$item->no_asset}}/{{$item->nama_equipment}}">
                                             {{$item->no_asset}}/{{$item->nama_equipment}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="mb-3 col-6">
-                                    <label for="exampleInputPassword1" class="form-label">Jam Pinjam</label>
-                                    <input type="datetime-local" class="form-control" id="exampleInputPassword1"
-                                        name="jam_pinjam">
-                                </div>
+                                <mb-3 class="col-6">
+                                    <label for="exampleInputPassword1" class="form-label">Qty</label>
+                                    <input type="number" class="form-control" name="jumlah">
+                                </mb-3>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">Keterangan</label>
@@ -86,8 +92,8 @@
                 <thead class="table-primary">
                     <tr>
                         <th class="col">Nama</th>
-                        <th class="col">No Aset</th>
-                        <th class="col">Jam Pinjam</th>
+                        <th class="col">Jenis Barang</th>
+                        <th class="col">Jumlah</th>
                         <th class="col">Handle</th>
                     </tr>
                 </thead>
@@ -96,22 +102,14 @@
                     $no =1;
                     @endphp
                     @foreach ($collection as $item)
+                    @php
+                    $uniq = $item->id
+                    @endphp
                     <tr>
                         <td>{{$item->user->nama}}</td>
-                        <td>{{$item->no_aset}}</td>
+                        <td>{{$item->jenis_barang}}</td>
                         <td>
-                            <div>
-                                <div>
-                                    <span>{{$item->jam_pinjam}}</span>
-                                </div>
-                                <div>
-                                    @if ($item->jam_pengembalian == null)
-                                    <button class="btn btn-outline-warning btn-sm">Belum kembali</button>
-                                    @else
-                                    <button class="btn btn-outline-success btn-sm">Sudah kembali</button>
-                                    @endif
-                                </div>
-                            </div>
+                            {{$item->jumlah}}
                         </td>
                         <td class="d-flex">
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -125,62 +123,47 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{$item->user->nama}}
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Detail data
                                             </h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{url('peminjaman-user/edit/'.$item->id)}}" method="post">
-                                                @csrf
-                                                @method('PUT')
                                                 <div class="row">
-                                                    <div class="mb-3 col-6">
+                                                    <div class="mb-3 col-4">
                                                         <label for="exampleInputPassword1"
                                                             class="form-label">Nama</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleInputPassword1" name="nama"
+                                                        <input type="text" class="form-control" name="nama"
                                                             value="{{$item->user->nama}}" readonly>
                                                     </div>
-                                                    <div class="mb-3 col-6">
-                                                        <label for="exampleInputPassword1" class="form-label">No
-                                                            Aset</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleInputPassword1" name="no_asset"
-                                                            value="{{$item->no_aset}}" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="mb-3 col-6">
-                                                        <label for="exampleInputPassword1" class="form-label">Jam
-                                                            Peminjaman</label>
-                                                        <input type="datetime-local" class="form-control"
-                                                            id="exampleInputPassword1" name="jam_pinjam"
-                                                            value="{{$item->jam_pinjam}}" readonly>
-                                                    </div>
-                                                    <div class="mb-3 col-6">
-                                                        <label for="exampleInputPassword1" class="form-label">Jam
-                                                            Pengembalian</label>
-                                                        <input type="datetime-local" class="form-control"
-                                                            id="exampleInputPassword1" name="jam_pengembalian"
-                                                            value="{{$item->jam_pengembalian}}">
-                                                    </div>
-                                                    <div class="mb-3">
+                                                    <div class="mb-3 col-4">
                                                         <label for="exampleInputPassword1"
-                                                            class="form-label">Keterangan</label>
-                                                        <textarea class="form-control" id="exampleFormControlTextarea1"
-                                                            rows="2" name="keterangan" readonly>{{$item->keterangan}}</textarea>
+                                                            class="form-label">Status</label>
+                                                        <input type="text" class="form-control" name="status"
+                                                            value="{{$item->status}}" readonly>
                                                     </div>
+                                                    <mb-3 class="col-4">
+                                                        <label for="exampleInputPassword1"
+                                                            class="form-label">Qty</label>
+                                                        <input type="text" class="form-control" name="jumlah"
+                                                            value="{{$item->jumlah}}">
+                                                    </mb-3>
                                                 </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <div class="mb-3">
+                                            <label for="exampleInputPassword1" class="form-label">Jenis
+                                                Barang</label>
+                                            <input type="test" class="form-control" name="jumlah"
+                                                value="{{$item->jenis_barang}}" readonly>
                                         </div>
-                                        </form>
+                                        <div class="mb-3">
+                                            <label for="exampleInputPassword1" class="form-label">Keterangan</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"
+                                                name="keterangan">{{$item->keterangan}}</textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </td>
                     </tr>
                     @endforeach

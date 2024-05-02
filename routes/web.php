@@ -45,7 +45,10 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:user')->group(function () {
         Route::get('dashboard', [Controller::class, 'dashboard'])->name('dashboard');
         Route::get('pengambilan-user', [PengambilanController::class, 'getUser'])->name('pengambilan');
+        Route::post('pengambilan-user', [PengambilanController::class, 'post']);
         Route::get('peminjaman-user', [PeminjamanController::class, 'getUser'])->name('peminjaman');
+        Route::post('peminjaman-user', [PeminjamanController::class, 'post']);
+        Route::put('peminjaman-user/edit/{id}', [PeminjamanController::class, 'putUser']);
     });
 });
 Route::get('login', [AuthController::class, 'get'])->name('login');

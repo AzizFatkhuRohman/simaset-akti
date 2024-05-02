@@ -218,6 +218,11 @@
     new DataTable('#table');
 </script>
 <script>
+    $(document).ready(function() {
+        $('.form-select').select2();
+    });
+</script>
+<script>
     function hapusP() {
       Swal.fire({
           title: 'Konfirmasi',

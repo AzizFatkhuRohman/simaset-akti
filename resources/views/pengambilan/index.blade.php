@@ -177,15 +177,8 @@
                                             <div class="col-6">
                                                 <label for="exampleInputPassword1" class="form-label">Jenis
                                                     Barang</label>
-                                                <select class="form-select" aria-label="Default select example"
-                                                    name="jenis_barang">
-                                                    <option value="{{$item->jenis_barang}}">
-                                                        {{$item->jenis_barang}}</option>
-                                                    @foreach ($eq as $item)
-                                                    <option value="{{$item->no_asset}}/{{$item->nama_equipment}}">
-                                                        {{$item->no_asset}}/{{$item->nama_equipment}}</option>
-                                                    @endforeach
-                                                </select>
+                                                    <input type="text" class="form-control" name="jumlah"
+                                                    value="{{$item->jenis_barang}}">
                                             </div>
                                             <div class="col-6">
                                                 <label for="exampleInputPassword1" class="form-label">Keterangan</label>
@@ -217,6 +210,11 @@
 </div>
 <script>
     new DataTable('#table');
+</script>
+<script>
+    $(document).ready(function() {
+        $('.form-select').select2();
+    });
 </script>
 <script>
     function hapusPe() {
